@@ -13,6 +13,7 @@
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addItemModal">
       Add product
     </button>
+
 </div>
 
 <div class="container table-responsive">
@@ -24,6 +25,7 @@
           <th>Name</th>
           <th>Price</th>
           <th>Quantity</th>
+          <th>Warehouse</th>
           <th></th>
           <th></th>
         </tr>
@@ -35,6 +37,7 @@
           <td name="name">{{product.name|title}}</td>
           <td name="price">{{product.price}}</td>
           <td name="quantity">{{product.quantity}}</td>
+          <td name="warehouse">{{product.warehouse|title}}</td>
           <td><a onclick="jsUpdateProduct({{ product.id }})" class="btn btn-warning">Update</a></td>
           <td><a href="{% url 'delete'  product.id %}" class="btn btn-danger">Delete</a></td>
         </tr>
@@ -76,8 +79,14 @@
                     <label for="quantity">Quantity</label>
                     <input type="number" class="form-control" id="quantity" name="quantity" required="required" min="0">
                 </div>
-
+                
             </div>
+            <select class="form-control" aria-label="Default select example" name="warehouse">
+                <option selected disabled> Select Warehouse </option>
+                {% for w in warehouses %}
+                    <option  value="{{ w.name }}">{{w.name|title}}</option>
+                {% endfor %}
+            </select>
 
           <div class="modal-footer pb-0 pr-0">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -90,6 +99,47 @@
 </div>
 
 
+<!-- Modal Create warehouse -->
+<!--
+<div class="modal fade" id="addWarehouseModal" tabindex="-1" role="dialog" arial-labelledby="exampleModalLabel" arial-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create warehouse</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="p-1" method="POST" action="{% url 'createWarehouse' %}">{% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required="required">
+            </div>
+            <div class="row">
+
+                <div class="form-group col">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" required="required" >
+                </div>
+
+                <div class="form-group col">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" name="city" required="required" >
+                </div>
+
+            </div>
+
+          <div class="modal-footer pb-0 pr-0">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+-->
 
 <!-- Modal Update products -->
 <div class="modal fade" id="UpdateProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

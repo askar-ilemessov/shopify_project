@@ -7,9 +7,19 @@ urlpatterns = [
     path('', home, name='home'),
     
     path('detail/<int:id>/', detail, name='detail'),
+
     path('new/', create, name='create'),
     path('update/', update, name='update'),
     path('delete/<int:id>/', delete, name='delete'),
+
+
+    path('warehouses/', warehouse, name='warehouse'),
+    path('newWarehouses/', createWarehouse, name='createWarehouse'),
+    path('warehouses/updateWarehouse/', updateWarehouse, name='updateWarehouse'),
+    path('deleteWarehouse/<int:id>/', deleteWarehouse, name='deleteWarehouse'),
+
+
+    
 ]
 
 if settings.DEBUG:

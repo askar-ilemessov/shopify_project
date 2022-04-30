@@ -1,0 +1,149 @@
+{% extends "app/base.html" %} 
+{% block title %}
+    List of all warehouses
+{% endblock %}
+
+
+{% block content %}
+
+<br>
+
+<div class="container mb-4">
+    
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addWarehouseModal">
+      Add warehouse
+    </button>
+</div>
+
+
+<div class="container table-responsive">
+    <table class="table table-striped" id="results">
+
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>City</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for warehouse in warehouses %}
+      <tr id="{{warehouse.id}}">
+          <td>{{warehouse.id}}</td>
+          <td name="name">{{warehouse.name|title}}</td>
+          <td name="address">{{warehouse.address}}</td>
+          <td name="city">{{warehouse.city}}</td>
+          <td><a onclick="jsUpdateWarehouse({{ warehouse.id }})" class="btn btn-warning">Update</a></td>
+          <td><a href="{% url 'deleteWarehouse'  warehouse.id %}" class="btn btn-danger">Delete</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+</div>
+
+
+
+<!-- Modal Create warehouse -->
+<div class="modal fade" id="addWarehouseModal" tabindex="-1" role="dialog" arial-labelledby="exampleModalLabel" arial-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create warehouse</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="p-1" method="POST" action="{% url 'createWarehouse' %}">{% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required="required">
+            </div>
+            <div class="row">
+
+                <div class="form-group col">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" required="required" >
+                </div>
+
+                <div class="form-group col">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" name="city" required="required" >
+                </div>
+
+            </div>
+          <div class="modal-footer pb-0 pr-0">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Update products -->
+<div class="modal fade" id="UpdateWarehouseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update warehouse</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="p-1" method="POST" id="editForm" action="{% url 'createWarehouse' %}">{% csrf_token %}
+            <input type="hidden" id="idEdit" name="id">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="nameEdit" name="name" required="required">
+            </div>
+            
+            <div class="row">
+
+                <div class="form-group col">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="addressEdit" name="address" required="required" >
+                </div>
+
+                <div class="form-group col">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="cityEdit" name="city" required="required" >
+                </div>
+
+            </div>
+          <div class="modal-footer pb-0 pr-0">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Scrtipt for Update prodcuts -->
+<script>
+    function jsUpdateWarehouse(id) {
+        let name = ($("#" + id).children("td[name='name']").html());
+        let address = ($("#" + id).children("td[name='address']").html());
+        let city = ($("#" + id).children("td[name='city']").html());
+        $('#idEdit').val(id);
+        $('#nameEdit').val(name);
+        $('#addressEdit').val(address);
+        $('#cityEdit').val(city);
+        $('#editForm').attr('action', 'updateWarehouse/');
+        $('#editForm option').removeAttr('selected');
+        $('#UpdateWarehouseModal').modal('show');
+    }
+</script>
+
+
+
+{% endblock %}
